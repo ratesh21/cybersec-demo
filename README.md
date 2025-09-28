@@ -1,7 +1,7 @@
 # cybersec-demo
 # Nmap Scan — scanme.nmap.org
 **Author:** Ratesh Kumar Khandei  
-**Date:** YYYY-MM-DD  
+**Date:** 2025-09-28  
 **Objective:** Quick reconnaissance and basic vulnerability mapping of a public test host for demonstration.
 
 ## Commands run
