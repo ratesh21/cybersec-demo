@@ -1,0 +1,35 @@
+# Nmap Recon Report — `scanme.nmap.org`
+
+**Author:** Ratesh Kumar Khandei  
+**Date:** 2025-09-28
+
+---
+
+## Executive summary
+A quick service/version scan of `scanme.nmap.org` revealed a small set of reachable services. HTTP (port **80**) is open and served by **Apache httpd 2.4.7 (Ubuntu)**. Most other TCP ports are filtered (no response) and several common service ports (FTP, DNS, HTTPS) are closed. The primary area of interest is the exposed HTTP service and its reported version — verify and patch as appropriate. No intrusive testing or exploitation was performed.
+
+---
+
+## Commands run
+# (If needed) install nmap
+sudo apt update && sudo apt install -y nmap
+
+# Basic service & version discovery (save human-readable output)
+nmap -sV -Pn scanme.nmap.org -oN nmap_scan.txt
+# -sV : service/version detection
+# -Pn : don't ping host (useful for remote targets)
+# -oN : write normal output to file
+
+# Quick NSE vulnerability script scan (non-intrusive on public test host)
+nmap -sV --script=vuln scanme.nmap.org -oN nmap_vuln.txt
+# --script=vuln : run vulnerability-related NSE scripts (safe on public test host)
+
+# (Optional) Full TCP port scan (all 65k ports) — slower
+nmap -p- -sV -Pn scanme.nmap.org -oN nmap_allports.txt
+
+# Show matching lines with line numbers:
+Select-String -Pattern 'open|closed|filtered' -Path .\nmap_scan.txt |
+  ForEach-Object { "{0}:{1}" -f $_.LineNumber, $_.Line }
+
+# Show first 100 lines:
+Get-Content .\nmap_scan.txt -TotalCount 100
